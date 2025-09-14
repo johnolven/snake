@@ -1,5 +1,5 @@
-import { Direction, Position, SnakeSegment, Apple, Star, GameState } from '../types/game';
-import { GAME_CONFIG, COLORS } from '../constants/game';
+import { Direction, Position, SnakeSegment, Apple, Star } from '../types/game';
+import { GAME_CONFIG } from '../constants/game';
 
 export class SnakeEngine {
   private nextSegmentId = 0;

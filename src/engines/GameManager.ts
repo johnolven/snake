@@ -1,4 +1,4 @@
-import { GameState, Direction, TetrisPiece, HighScore } from '../types/game';
+import { GameState, Direction, HighScore } from '../types/game';
 import { GAME_CONFIG } from '../constants/game';
 import { SnakeEngine } from './SnakeEngine';
 import { TetrisEngine } from './TetrisEngine';

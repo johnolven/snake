@@ -1,0 +1,149 @@
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%);
+  color: white;
+  font-family: 'Orbitron', monospace;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #00ff41;
+  font-family: 'Orbitron', monospace;
+}
+
+.loading-text {
+  font-size: 36px;
+  font-weight: bold;
+  text-shadow: 0 0 20px #00ff41;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
+.game-title {
+  color: #00ff41;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 0 0 20px #00ff41;
+  letter-spacing: 2px;
+  animation: titleGlow 3s infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 20px #00ff41; }
+  to { text-shadow: 0 0 30px #00ff41, 0 0 40px #00cc33; }
+}
+
+.game-controls {
+  display: flex;
+  gap: 15px;
+}
+
+.control-button {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border: 2px solid #00ff41;
+  border-radius: 6px;
+  color: #00ff41;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.control-button:hover {
+  background: linear-gradient(145deg, #00ff41, #00cc33);
+  color: black;
+  box-shadow: 0 0 15px #00ff41;
+  transform: scale(1.05);
+}
+
+.game-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.game-area {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.game-instructions {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(26, 26, 46, 0.3);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.instruction-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.instruction-title {
+  color: #00ff41;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.instruction-keys {
+  color: #ccc;
+  font-size: 10px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .game-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .game-title {
+    font-size: 24px;
+  }
+
+  .game-instructions {
+    gap: 20px;
+  }
+
+  .instruction-keys {
+    font-size: 9px;
+  }
+}

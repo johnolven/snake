@@ -1,0 +1,114 @@
+.game-ui {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  font-family: 'Orbitron', monospace;
+}
+
+.ui-panel {
+  background: rgba(26, 26, 46, 0.8);
+  border: 2px solid #00ff41;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 200px;
+  box-shadow: 0 0 15px #00ff41;
+}
+
+.left-panel {
+  margin-right: 20px;
+}
+
+.right-panel {
+  margin-left: 20px;
+}
+
+.ui-section {
+  margin-bottom: 20px;
+}
+
+.ui-section:last-child {
+  margin-bottom: 0;
+}
+
+.ui-title {
+  color: #00ff41;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 5px #00ff41;
+  letter-spacing: 1px;
+}
+
+.ui-value {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ff41;
+}
+
+.score-value {
+  font-size: 32px;
+  color: #00ff41;
+}
+
+.star-power {
+  animation: starPowerPulse 0.5s infinite alternate;
+}
+
+.star-power-title {
+  color: #ffd700;
+  text-shadow: 0 0 10px #ffff00;
+  animation: starPowerGlow 1s infinite alternate;
+}
+
+.star-power-timer {
+  color: #ffd700;
+  font-size: 28px;
+}
+
+.next-piece-preview {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #1a1a2e;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.controls-info {
+  font-size: 12px;
+}
+
+.control-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.control-label {
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.control-keys {
+  color: white;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+@keyframes starPowerPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+@keyframes starPowerGlow {
+  from { text-shadow: 0 0 10px #ffff00; }
+  to { text-shadow: 0 0 20px #ffff00, 0 0 30px #ffd700; }
+}

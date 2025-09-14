@@ -1,0 +1,232 @@
+.high-score-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: 'Orbitron', monospace;
+}
+
+.high-score-modal {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  border: 3px solid #00ff41;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 0 30px #00ff41,
+    inset 0 0 30px rgba(0, 255, 65, 0.1);
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from {
+    transform: scale(0.8) translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.modal-title {
+  color: #00ff41;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 0 15px 0;
+  text-shadow: 0 0 15px #00ff41;
+  letter-spacing: 3px;
+  animation: titleGlow 2s infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 15px #00ff41; }
+  to { text-shadow: 0 0 25px #00ff41, 0 0 35px #00ff41; }
+}
+
+.current-score {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.name-entry-section {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.new-high-score-banner {
+  color: #ffd700;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px #ffff00;
+  animation: starPowerGlow 1s infinite alternate;
+}
+
+.name-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.name-label {
+  color: #00ff41;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.name-input {
+  background: #0a0a0a;
+  border: 2px solid #00ff41;
+  border-radius: 4px;
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  width: 120px;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.name-input:focus {
+  outline: none;
+  box-shadow: 0 0 15px #00ff41;
+}
+
+.save-button {
+  background: linear-gradient(145deg, #00ff41, #00cc33);
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00ff41;
+}
+
+.save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.scores-list {
+  margin-bottom: 30px;
+}
+
+.scores-header {
+  display: grid;
+  grid-template-columns: 80px 80px 120px 1fr;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 2px solid #1a1a2e;
+  margin-bottom: 15px;
+  color: #00ff41;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.no-scores {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  padding: 40px;
+}
+
+.score-row {
+  display: grid;
+  grid-template-columns: 80px 80px 120px 1fr;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.score-row:hover {
+  background: rgba(0, 255, 65, 0.1);
+  transform: scale(1.02);
+}
+
+.top-three {
+  color: #00ff41;
+  font-weight: bold;
+}
+
+.rank {
+  text-align: center;
+  font-weight: bold;
+}
+
+.name {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.score {
+  font-weight: bold;
+  color: #00ff41;
+}
+
+.stats {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.modal-footer {
+  text-align: center;
+}
+
+.close-button {
+  background: linear-gradient(145deg, #333, #555);
+  border: 2px solid #1a1a2e;
+  border-radius: 6px;
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-button:hover {
+  border-color: #00ff41;
+  box-shadow: 0 0 10px #00ff41;
+  transform: scale(1.05);
+}
+
+@keyframes starPowerGlow {
+  from { text-shadow: 0 0 15px #ffff00; }
+  to { text-shadow: 0 0 25px #ffff00, 0 0 35px #ffd700; }
+}
