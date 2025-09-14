@@ -28,6 +28,8 @@ export class SoundManager {
     this.sounds.set('gameOver', this.createToneAudio(150, 0.8, 'sawtooth'));
     this.sounds.set('starPower', this.createToneAudio(880, 0.5, 'sine'));
     this.sounds.set('pieceDestroy', this.createToneAudio(800, 0.1, 'square'));
+    this.sounds.set('menuSelect', this.createToneAudio(660, 0.1, 'square'));
+    this.sounds.set('introTheme', this.createToneAudio(440, 1.5, 'sine'));
     
     this.initialized = true;
   }
@@ -204,5 +206,37 @@ export class SoundManager {
   // Method to test if audio is working
   testSound() {
     this.play('eatApple');
+  }
+
+  // Epic intro sequence
+  playIntroSequence() {
+    if (!this.enabled) return;
+    
+    const frequencies = [220, 293, 349, 440, 523, 659, 784];
+    frequencies.forEach((freq, index) => {
+      setTimeout(() => {
+        const audio = this.createToneAudio(freq, 0.3, 'sine');
+        if (this.enabled) {
+          audio.play().catch(() => {});
+        }
+      }, index * 200);
+    });
+    
+    // Add some bass notes
+    setTimeout(() => {
+      const bass = this.createToneAudio(110, 1.0, 'square');
+      if (this.enabled) {
+        bass.volume = 0.2;
+        bass.play().catch(() => {});
+      }
+    }, 1400);
+  }
+
+  // Menu navigation sounds
+  playMenuHover() {
+    if (!this.enabled) return;
+    const audio = this.createToneAudio(880, 0.05, 'sine');
+    audio.volume = 0.1;
+    audio.play().catch(() => {});
   }
 }

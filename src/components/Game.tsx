@@ -3,12 +3,17 @@ import { GameManager } from '../engines/GameManager';
 import { GameRenderer } from './GameRenderer';
 import { GameUI } from './GameUI';
 import { HighScoreSystem } from './HighScoreSystem';
+import { IntroScreen } from './IntroScreen';
+import { TutorialScreen } from './TutorialScreen';
 import { SoundManager } from '../utils/SoundManager';
 import { GameState } from '../types/game';
 import { KEYS } from '../constants/game';
 import './Game.css';
 
+type GameScreen = 'intro' | 'tutorial' | 'game';
+
 export const Game: React.FC = () => {
+  const [currentScreen, setCurrentScreen] = useState<GameScreen>('intro');
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [showHighScores, setShowHighScores] = useState(false);
   const [isNewHighScore, setIsNewHighScore] = useState(false);
@@ -18,8 +23,15 @@ export const Game: React.FC = () => {
   const soundManagerRef = useRef<SoundManager | null>(null);
   const gameLoopRef = useRef<number | null>(null);
 
-  // Initialize game manager and sound manager
+  // Initialize sound manager immediately
   useEffect(() => {
+    soundManagerRef.current = new SoundManager();
+  }, []);
+
+  // Initialize game manager only when starting the game
+  const initializeGame = useCallback(() => {
+    if (gameManagerRef.current) return;
+    
     gameManagerRef.current = new GameManager();
     soundManagerRef.current = new SoundManager();
     
@@ -51,12 +63,6 @@ export const Game: React.FC = () => {
 
     setGameState(gameManagerRef.current.getState());
     startGameLoop();
-
-    return () => {
-      if (gameLoopRef.current) {
-        cancelAnimationFrame(gameLoopRef.current);
-      }
-    };
   }, []);
 
   // Game loop
@@ -161,6 +167,55 @@ export const Game: React.FC = () => {
     soundManagerRef.current?.setEnabled(newSoundEnabled);
   };
 
+  const startGame = () => {
+    initializeGame();
+    setCurrentScreen('game');
+  };
+
+  const showTutorial = () => {
+    setCurrentScreen('tutorial');
+  };
+
+  const backToIntro = () => {
+    setCurrentScreen('intro');
+  };
+
+  const completeTutorial = () => {
+    startGame();
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (gameLoopRef.current) {
+        cancelAnimationFrame(gameLoopRef.current);
+      }
+    };
+  }, []);
+
+  // Show intro screen
+  if (currentScreen === 'intro') {
+    return (
+      <IntroScreen 
+        onStart={startGame}
+        onShowTutorial={showTutorial}
+        soundManager={soundManagerRef.current}
+      />
+    );
+  }
+
+  // Show tutorial screen
+  if (currentScreen === 'tutorial') {
+    return (
+      <TutorialScreen 
+        onComplete={completeTutorial}
+        onBack={backToIntro}
+        soundManager={soundManagerRef.current}
+      />
+    );
+  }
+
+  // Show loading if game not initialized
   if (!gameState) {
     return (
       <div className="loading-screen">
@@ -185,6 +240,9 @@ export const Game: React.FC = () => {
           </button>
           <button onClick={() => gameManagerRef.current?.resetGame()} className="control-button">
             NEW GAME
+          </button>
+          <button onClick={backToIntro} className="control-button">
+            MAIN MENU
           </button>
         </div>
       </div>
