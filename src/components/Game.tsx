@@ -43,6 +43,9 @@ export const Game: React.FC = () => {
       },
       onPieceDestroyed: () => {
         soundManagerRef.current?.play('pieceDestroy');
+      },
+      onPiecePlaced: () => {
+        soundManagerRef.current?.play('tetrisPlace');
       }
     });
 
@@ -176,6 +179,9 @@ export const Game: React.FC = () => {
           </button>
           <button onClick={toggleSound} className="control-button">
             SOUND: {soundEnabled ? 'ON' : 'OFF'}
+          </button>
+          <button onClick={() => soundManagerRef.current?.testSound()} className="control-button">
+            TEST SOUND
           </button>
           <button onClick={() => gameManagerRef.current?.resetGame()} className="control-button">
             NEW GAME

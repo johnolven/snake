@@ -1,6 +1,6 @@
 import React from 'react';
 import { GameState } from '../types/game';
-import { COLORS } from '../constants/game';
+import { COLORS, GAME_CONFIG } from '../constants/game';
 import './GameUI.css';
 
 interface GameUIProps {
@@ -10,6 +10,10 @@ interface GameUIProps {
 export const GameUI: React.FC<GameUIProps> = ({ gameState }) => {
   const starPowerTimeLeft = gameState.starPowerActive 
     ? Math.max(0, gameState.starPowerEndTime - Date.now()) / 1000
+    : 0;
+    
+  const nextStarTime = gameState.stars.length === 0 && !gameState.starPowerActive
+    ? Math.max(0, GAME_CONFIG.starSpawnInterval - (Date.now() - gameState.lastStarSpawn)) / 1000
     : 0;
 
   return (
@@ -34,6 +38,13 @@ export const GameUI: React.FC<GameUIProps> = ({ gameState }) => {
           <div className="ui-section star-power">
             <h3 className="ui-title star-power-title">★ STAR POWER ★</h3>
             <div className="ui-value star-power-timer">{starPowerTimeLeft.toFixed(1)}s</div>
+          </div>
+        )}
+
+        {nextStarTime > 0 && (
+          <div className="ui-section next-star">
+            <h3 className="ui-title next-star-title">⭐ NEXT STAR</h3>
+            <div className="ui-value next-star-timer">{nextStarTime.toFixed(0)}s</div>
           </div>
         )}
       </div>

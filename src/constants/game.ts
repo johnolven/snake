@@ -7,7 +7,8 @@ export const GAME_CONFIG: GameConfig = {
   snakeSpeed: 200, // ms between moves
   tetrisSpeed: 800, // ms between drops
   starPowerDuration: 8000, // 8 seconds
-  starSpawnChance: 0.03, // 3% chance per apple spawn
+  starSpawnChance: 0.15, // 15% chance per apple spawn
+  starSpawnInterval: 20000, // 20 seconds between automatic star spawns
 };
 
 export const COLORS = {

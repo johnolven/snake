@@ -67,6 +67,25 @@
   font-size: 28px;
 }
 
+.next-star {
+  border: 1px solid #ffd700;
+  border-radius: 6px;
+  padding: 10px;
+  background: rgba(255, 215, 0, 0.1);
+}
+
+.next-star-title {
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffd700;
+  font-size: 12px;
+}
+
+.next-star-timer {
+  color: #ffd700;
+  font-size: 20px;
+  text-shadow: 0 0 5px #ffd700;
+}
+
 .next-piece-preview {
   width: 100px;
   height: 100px;

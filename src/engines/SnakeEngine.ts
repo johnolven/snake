@@ -120,9 +120,9 @@ export class SnakeEngine {
     };
   }
 
-  spawnStar(snake: SnakeSegment[], tetrisGrid: (string | null)[][], existingApples: Apple[], existingStars: Star[]): Star | null {
-    // Only spawn if chance is met
-    if (Math.random() > GAME_CONFIG.starSpawnChance) return null;
+  spawnStar(snake: SnakeSegment[], tetrisGrid: (string | null)[][], existingApples: Apple[], existingStars: Star[], forceSpawn: boolean = false): Star | null {
+    // Only spawn if chance is met (unless forced)
+    if (!forceSpawn && Math.random() > GAME_CONFIG.starSpawnChance) return null;
 
     const occupiedPositions = new Set<string>();
     

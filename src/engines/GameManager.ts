@@ -14,6 +14,7 @@ export class GameManager {
     onAppleEaten?: () => void;
     onStarCollected?: () => void;
     onPieceDestroyed?: () => void;
+    onPiecePlaced?: () => void;
   } = {};
 
   constructor() {
@@ -49,6 +50,7 @@ export class GameManager {
       starPowerEndTime: 0,
       lastTetrisDrop: Date.now(),
       lastSnakeMove: Date.now(),
+      lastStarSpawn: Date.now(),
     };
   }
 
@@ -134,12 +136,21 @@ export class GameManager {
       this.gameState.lastTetrisDrop = now;
     }
 
+    // Periodically spawn stars
+    if (now - this.gameState.lastStarSpawn >= GAME_CONFIG.starSpawnInterval) {
+      this.trySpawnStar();
+      this.gameState.lastStarSpawn = now;
+    }
+
     this.notifyStateChange();
   }
 
   private updateSnake() {
     const newSnake = this.snakeEngine.moveSnake(this.gameState.snake, this.gameState.direction);
     const head = newSnake[0];
+    
+    // Play move sound (optional, can be disabled if too frequent)
+    // this.callbacks.onSnakeMove?.();
 
     // Check wall collision
     if (this.snakeEngine.checkWallCollision(head)) {
@@ -222,6 +233,9 @@ export class GameManager {
         this.gameState.currentPiece, 
         this.gameState.tetrisGrid
       );
+      
+      // Play piece placement sound
+      this.callbacks.onPiecePlaced?.();
 
       // Clear completed lines
       const { newGrid, linesCleared } = this.tetrisEngine.clearLines(this.gameState.tetrisGrid);
@@ -254,6 +268,23 @@ export class GameManager {
       this.gameState.tetrisGrid[position.y][position.x] = null;
       this.gameState.score += 50;
       this.callbacks.onPieceDestroyed?.();
+    }
+  }
+
+  private trySpawnStar() {
+    // Don't spawn if there are already stars or if in star power mode
+    if (this.gameState.stars.length > 0 || this.gameState.starPowerActive) return;
+
+    const newStar = this.snakeEngine.spawnStar(
+      this.gameState.snake,
+      this.gameState.tetrisGrid,
+      this.gameState.apples,
+      this.gameState.stars,
+      true // Force spawn for periodic spawning
+    );
+    
+    if (newStar) {
+      this.gameState.stars.push(newStar);
     }
   }
 

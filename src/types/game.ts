@@ -50,6 +50,7 @@ export interface GameState {
   starPowerEndTime: number;
   lastTetrisDrop: number;
   lastSnakeMove: number;
+  lastStarSpawn: number;
 }
 
 export interface HighScore {
@@ -68,6 +69,7 @@ export interface GameConfig {
   tetrisSpeed: number;
   starPowerDuration: number;
   starSpawnChance: number;
+  starSpawnInterval: number;
 }
 
 export interface SoundEffects {

@@ -1,12 +1,25 @@
 export class SoundManager {
   private sounds: Map<string, HTMLAudioElement> = new Map();
   private enabled: boolean = true;
+  private audioContext: AudioContext | null = null;
+  private initialized: boolean = false;
 
   constructor() {
-    this.initializeSounds();
+    // Don't initialize sounds immediately - wait for user interaction
+    this.setupAudioContext();
+  }
+
+  private setupAudioContext() {
+    try {
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    } catch (e) {
+      console.warn('Web Audio API not supported');
+    }
   }
 
   private initializeSounds() {
+    if (this.initialized) return;
+    
     // Create different sound effects using programmatically generated tones
     this.sounds.set('moveSnake', this.createToneAudio(200, 0.1, 'square'));
     this.sounds.set('eatApple', this.createToneAudio(440, 0.2, 'sine'));
@@ -15,6 +28,8 @@ export class SoundManager {
     this.sounds.set('gameOver', this.createToneAudio(150, 0.8, 'sawtooth'));
     this.sounds.set('starPower', this.createToneAudio(880, 0.5, 'sine'));
     this.sounds.set('pieceDestroy', this.createToneAudio(800, 0.1, 'square'));
+    
+    this.initialized = true;
   }
 
   private createToneAudio(frequency: number, duration: number, type: OscillatorType): HTMLAudioElement {
@@ -71,16 +86,37 @@ export class SoundManager {
     return audio;
   }
 
-  play(soundName: string) {
+  async play(soundName: string) {
     if (!this.enabled) return;
+    
+    // Initialize sounds on first play (after user interaction)
+    if (!this.initialized) {
+      this.initializeSounds();
+    }
+    
+    // Resume audio context if suspended
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      try {
+        await this.audioContext.resume();
+      } catch (e) {
+        console.warn('Could not resume audio context');
+      }
+    }
     
     const sound = this.sounds.get(soundName);
     if (sound) {
-      // Reset the audio to beginning and play
-      sound.currentTime = 0;
-      sound.play().catch(() => {
-        // Ignore play errors (common in browsers with autoplay restrictions)
-      });
+      try {
+        // Reset the audio to beginning and play
+        sound.currentTime = 0;
+        await sound.play();
+      } catch (e) {
+        // Try to create a new audio instance if the old one failed
+        if (soundName === 'moveSnake') {
+          this.playMoveSoundEffect();
+        } else if (soundName === 'eatApple') {
+          this.playEatSoundEffect();
+        }
+      }
     }
   }
 
@@ -124,5 +160,49 @@ export class SoundManager {
         }
       }, index * 50);
     });
+  }
+
+  // Alternative sound methods using Web Audio API
+  private playMoveSoundEffect() {
+    if (!this.audioContext || !this.enabled) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.value = 200;
+    oscillator.type = 'square';
+    
+    gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+    
+    oscillator.start();
+    oscillator.stop(this.audioContext.currentTime + 0.1);
+  }
+
+  private playEatSoundEffect() {
+    if (!this.audioContext || !this.enabled) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    oscillator.frequency.value = 440;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+    
+    oscillator.start();
+    oscillator.stop(this.audioContext.currentTime + 0.2);
+  }
+
+  // Method to test if audio is working
+  testSound() {
+    this.play('eatApple');
   }
 }
